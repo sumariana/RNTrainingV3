@@ -1,5 +1,5 @@
 import React,{useCallback,useReducer,useState} from 'react'
-import { StyleSheet, View, Text,Image,ScrollView } from 'react-native';
+import { StyleSheet, View,ScrollView,Alert } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import CustomInput from '../components/CustomInput';
 import SpacerTop from '../components/SpacerTop';
@@ -44,7 +44,7 @@ const RegisterScreen = props =>{
             password_confirmation:''
         },
         inputValidities:{
-            name:false,
+            username:false,
             email: false,
             password:false,
             password_confirmation:false
@@ -57,7 +57,27 @@ const RegisterScreen = props =>{
     },[dispatchFormState]);
 
     const doRegister = async()=>{
+        setIsLoading(true)
+        try{
+            const response = await dispatch(authActions.register(formState.inputValues))
+            setIsLoading(false)
+            console.log(formState.inputValidities)
 
+            if(response.status===1){
+                Alert.alert( "Register Success", "Register success you will redirect to login page", [
+                    { 
+                        text: "OK",onPress: ()=>{
+                            props.navigation.goBack()
+                        }
+                    }
+                ]);
+            }else{
+                commonctions.showErrorAlert(response.error.errorMessage)
+            }
+        }catch(err){
+            setIsLoading(false)
+            commonctions.showErrorAlert(err.message)
+        }
     }
 
     return (
@@ -112,7 +132,7 @@ const RegisterScreen = props =>{
             <View style={styles.bottomContainer}>
             <CustomButton
                 title="Register"
-                disabled={false}
+                disabled={!formState.formIsValid}
                 onPress={doRegister}
                 />
             </View>

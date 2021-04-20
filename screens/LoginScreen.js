@@ -38,7 +38,7 @@ const LoginScreen = props =>{
             if(response.status===1){
                 props.navigation.navigate('MainFlow')
             }else{
-                props.navigation.navigate('welcome')
+                commonctions.showErrorAlert(response.error.errorMessage)
             }
         } catch (err) {
             setIsLoading(false)
