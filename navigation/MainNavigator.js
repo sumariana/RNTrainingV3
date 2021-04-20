@@ -67,7 +67,12 @@ const MainNavigator = createSwitchNavigator({
                     headerTitleAlign:'left'
                 }
             },
-            register: RegisterScreen
+            register: {
+                screen: RegisterScreen,
+                navigationOptions:{
+                    headerTitleAlign:'left'
+                }
+            }
         },{
             defaultNavigationOptions : defaultNavOptions
         }),
