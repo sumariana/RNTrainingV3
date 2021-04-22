@@ -16,9 +16,6 @@ export const login = (email, password) =>{
                 }
             });
             const data = response.data
-            if(data.status===1){
-                await AsyncStorage.setItem(StorageKey.KEY_ACCESS_TOKEN, data.accessToken);
-            }
             return data
         }catch(error){
             getErrorMessage(error)
@@ -38,9 +35,6 @@ export const register = (formData) =>{
                 }
             });
             const data = response.data
-            if(data.status===1){
-                await AsyncStorage.setItem(StorageKey.KEY_ACCESS_TOKEN, data.accessToken);
-            }
             return data
         }catch(error){
             getErrorMessage(error)

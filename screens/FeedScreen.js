@@ -2,24 +2,23 @@ import React from 'react';
 import { StyleSheet, View, Text,Image,ScrollView } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import SpacerTop from '../components/SpacerTop';
+import {Icon} from 'react-native-elements';
 
 const FeedScreen = props =>{
     return (
         <View style={styles.container}>
             <Text>Training App</Text>
             <View>
-                <CustomButton
-                title="Login"
-                />
-                <SpacerTop/>
-                <CustomButton
-                title="Register"
-                type = "outline"
-                />
+            
             </View>
         </View>
     );
 };
+
+FeedScreen.navigationOptions={
+    title: 'Feed',
+    tabBarIcon: ({ tintColor }) => <Icon type='material' name='collections' color={tintColor} />
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -34,5 +33,5 @@ const styles = StyleSheet.create({
         fontWeight:'bold'
     }
 })
-
+aaa
 export default FeedScreen;

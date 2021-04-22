@@ -1,3 +1,5 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import StorageKey from "../constants/StorageKey"
 import React,{useState,useCallback} from 'react';
 import { StyleSheet, View, Text,Image,ScrollView } from 'react-native';
 import CustomButton from '../components/CustomButton';
@@ -36,6 +38,7 @@ const LoginScreen = props =>{
             setIsLoading(false);
             console.log(response)
             if(response.status===1){
+                await AsyncStorage.setItem(StorageKey.KEY_ACCESS_TOKEN, response.accessToken);
                 props.navigation.navigate('MainFlow')
             }else{
                 commonctions.showErrorAlert(response.error.errorMessage)
@@ -83,10 +86,8 @@ const LoginScreen = props =>{
     );
 };
 
-LoginScreen.navigationOptions = navData =>{
-    return{
-        title: 'Login'
-    }
+LoginScreen.navigationOptions = {
+    title: 'Login'
 }
 
 const styles = StyleSheet.create({

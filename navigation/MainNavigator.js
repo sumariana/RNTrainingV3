@@ -20,7 +20,7 @@ const defaultNavOptions = {
         fontSize: 20,
         color: 'black'
     },
-    headerTintColor: Platform.OS === 'android' ? 'black' : Colors.primary
+    headerTintColor: Platform.OS === 'android' ? Colors.primary : Colors.primary
 };
 
 const MainTab = createBottomTabNavigator({
@@ -33,17 +33,17 @@ const MainTab = createBottomTabNavigator({
             allowFontScaling: false,
             activeTintColor: Colors.primary,
             style: {
-                paddingTop: 5,
-                // paddingBottom: 5,
+                paddingTop:10,
                 ...Platform.select({
                     android: {
                         borderTopWidth: 0,
-                        elevation: 10
+                        elevation: 8
+                    
                     }
                 }),
             },
             labelStyle: {
-                fontSize: 10,
+                fontSize: 12,
             }
         },
         tabBarOnPress: ({ navigation, defaultHandler }) => {
@@ -53,24 +53,30 @@ const MainTab = createBottomTabNavigator({
     lazy: true
 });
 
+MainTab.navigationOptions={
+    header: ()=> false
+}
+
 const MainNavigator = createSwitchNavigator({
     intro: createStackNavigator({
             welcome: {
                 screen: WelcomeScreen,
                 navigationOptions:{
-                    headerShown:false
+                    headerShown:false,
                 }
             },
             login: {
                 screen: LoginScreen,
                 navigationOptions:{
-                    headerTitleAlign:'left'
+                    headerTitleAlign:'left',
+                    headerTintColor: 'black'
                 }
             },
             register: {
                 screen: RegisterScreen,
                 navigationOptions:{
-                    headerTitleAlign:'left'
+                    headerTitleAlign:'left',
+                    headerTintColor: 'black'
                 }
             }
         },{
@@ -81,8 +87,8 @@ const MainNavigator = createSwitchNavigator({
         },{
             defaultNavigationOptions: {
                 headerStyle: {
-                    elevation: 0,
-                    shadowOpacity: 0
+                    elevation: 10,
+                    shadowOpacity: 10
                 },
                 ...defaultNavOptions
             },

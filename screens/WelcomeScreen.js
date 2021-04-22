@@ -1,9 +1,22 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import StorageKey from "../constants/StorageKey"
 import { StyleSheet, View, Text,Image,ScrollView } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import SpacerTop from '../components/SpacerTop';
 
 const WelcomeScreen = props =>{
+
+    const autoLogin = async()=>{
+        const tkn = await AsyncStorage.getItem(StorageKey.KEY_ACCESS_TOKEN);
+        if(tkn!==null){
+            props.navigation.navigate('MainFlow') 
+        }
+    }
+
+    useEffect(()=>{
+        autoLogin()
+    },[])
 
     return (
         <View style={styles.container}>
