@@ -33,5 +33,4 @@ const styles = StyleSheet.create({
         fontWeight:'bold'
     }
 })
-aaa
 export default FeedScreen;
