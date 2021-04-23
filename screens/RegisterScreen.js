@@ -64,10 +64,12 @@ const RegisterScreen = props =>{
             console.log(formState.inputValidities)
 
             if(response.status===1){
+                await AsyncStorage.setItem(StorageKey.KEY_ACCESS_TOKEN, response.accessToken);
+                await AsyncStorage.setItem(StorageKey.KEY_USER_ID, response.userId);
                 Alert.alert( "Register Success", "Register success you will redirect to login page", [
                     { 
                         text: "OK",onPress: ()=>{
-                            props.navigation.goBack()
+                            props.navigation.navigate('MainFlow')
                         }
                     }
                 ]);

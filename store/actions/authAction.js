@@ -41,3 +41,40 @@ export const register = (formData) =>{
         }
     }
 }
+
+export const getProfile =() =>{
+    return async(dispatch) => {
+            try {
+            const token = await AsyncStorage.getItem(StorageKey.KEY_ACCESS_TOKEN)
+            const userId = await AsyncStorage.getItem(StorageKey.KEY_USER_ID)
+            const response = await getClient.get('/ProfileCtrl/ProfileDisplay',{
+                params:{
+                    access_token: token,
+                    user_id: userId
+                }
+            });
+            const data = response.data
+            console.log(data)
+            dispatch({type: GET_USER_DATA,payload: data})
+        } catch (err) {
+            getErrorMessage(err);
+        }
+    }
+}
+
+export const deleteAccount =() =>{
+    return async(dispatch) => {
+            try {
+            const token = await AsyncStorage.getItem(StorageKey.KEY_ACCESS_TOKEN)
+            const response = await getClient.post('/AccountCtrl/DeleteAccount',{
+                params:{
+                    access_token: token
+                }
+            });
+            const data = response.data
+            return data
+        } catch (err) {
+            getErrorMessage(err);
+        }
+    }
+}

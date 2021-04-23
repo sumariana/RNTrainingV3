@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View,Platform } from 'react-native';
 
-const headerHeight = Platform.OS === "android" ? 56 : 46;
+const headerHeight = Platform.OS === "android" ? 51 : 41;
 const customToolbar = props=>{
     return (
         <View style={{...styles.container,...props.containerStyle}}>

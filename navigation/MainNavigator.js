@@ -11,6 +11,7 @@ import RegisterScreen from '../screens/RegisterScreen';
 import FeedScreen from '../screens/FeedScreen';
 import MessageScreen from '../screens/MessageScreen';
 import MyPageScreen from '../screens/MyPageScreen';
+import WebViewScreen from '../screens/WebViewScreen';
 
 const defaultNavOptions = {
     headerTitleAlign: 'center',
@@ -20,7 +21,7 @@ const defaultNavOptions = {
         fontSize: 20,
         color: 'black'
     },
-    headerTintColor: Platform.OS === 'android' ? Colors.primary : Colors.primary
+    headerTintColor: Platform.OS === 'android' ? 'black' : Colors.primary
 };
 
 const MainTab = createBottomTabNavigator({
@@ -69,21 +70,22 @@ const MainNavigator = createSwitchNavigator({
                 screen: LoginScreen,
                 navigationOptions:{
                     headerTitleAlign:'left',
-                    headerTintColor: 'black'
+                    
                 }
             },
             register: {
                 screen: RegisterScreen,
                 navigationOptions:{
                     headerTitleAlign:'left',
-                    headerTintColor: 'black'
+                    
                 }
             }
         },{
             defaultNavigationOptions : defaultNavOptions
         }),
     MainFlow: createStackNavigator({
-        MainTab
+        MainTab,
+        webView : WebViewScreen
         },{
             defaultNavigationOptions: {
                 headerStyle: {

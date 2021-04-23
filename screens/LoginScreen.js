@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import StorageKey from "../constants/StorageKey"
+import StorageKey from "../constants/StorageKey";
 import React,{useState,useCallback} from 'react';
 import { StyleSheet, View, Text,Image,ScrollView } from 'react-native';
 import CustomButton from '../components/CustomButton';
@@ -8,7 +8,7 @@ import SpacerTop from '../components/SpacerTop';
 import * as commonctions from '../store/actions/commonActions';
 import SafeAreaView from 'react-native-safe-area-view';
 import { useSelector, useDispatch } from 'react-redux';
-import * as authActions from '../store/actions/authAction'
+import * as authActions from '../store/actions/authAction';
 
 const LoginScreen = props =>{
     const dispatch = useDispatch()
@@ -39,6 +39,7 @@ const LoginScreen = props =>{
             console.log(response)
             if(response.status===1){
                 await AsyncStorage.setItem(StorageKey.KEY_ACCESS_TOKEN, response.accessToken);
+                await AsyncStorage.setItem(StorageKey.KEY_USER_ID, JSON.stringify(response.userId));
                 props.navigation.navigate('MainFlow')
             }else{
                 commonctions.showErrorAlert(response.error.errorMessage)
