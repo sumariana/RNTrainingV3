@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import getClient from "../../api/getClient";
 import { getErrorMessage } from "./commonActions";
-import StorageKey from "../../constants/StorageKey"
+import StorageKey from "../../src/constants/StorageKey"
 
 export const GET_USER_DATA = "GET_USER_DATA";
 

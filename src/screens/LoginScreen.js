@@ -5,10 +5,10 @@ import { StyleSheet, View, Text,Image,ScrollView } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import CustomInput from '../components/CustomInput';
 import SpacerTop from '../components/SpacerTop';
-import * as commonctions from '../store/actions/commonActions';
+import * as commonctions from '../../store/actions/commonActions';
 import SafeAreaView from 'react-native-safe-area-view';
 import { useSelector, useDispatch } from 'react-redux';
-import * as authActions from '../store/actions/authAction';
+import * as authActions from '../../store/actions/authAction';
 
 const LoginScreen = props =>{
     const dispatch = useDispatch()

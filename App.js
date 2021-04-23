@@ -9,11 +9,11 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import ReduxThunk from 'redux-thunk';
 
-import Colors from './constants/Colors';
-import WelcomeScreen from './screens/WelcomeScreen';
+import Colors from './src/constants/Colors';
+import WelcomeScreen from './src/screens/WelcomeScreen';
 import authReducer from './store/reducers/authReducer';
-import MainNavigator from './navigation/MainNavigator';
-import NavigationService from './navigation/navigationRef'
+import MainNavigator from './src/navigation/MainNavigator';
+import NavigationService from './src/navigation/navigationRef'
 
 
 const rootReducer = combineReducers({
