@@ -12,6 +12,7 @@ import FeedScreen from '../screens/FeedScreen';
 import MessageScreen from '../screens/MessageScreen';
 import MyPageScreen from '../screens/MyPageScreen';
 import WebViewScreen from '../screens/WebViewScreen';
+import EditProfileScreen from '../screens/EditProfileScreen';
 
 const defaultNavOptions = {
     headerTitleAlign: 'center',
@@ -76,8 +77,7 @@ const MainNavigator = createSwitchNavigator({
             register: {
                 screen: RegisterScreen,
                 navigationOptions:{
-                    headerTitleAlign:'left',
-                    
+                    headerTitleAlign:'left', 
                 }
             }
         },{
@@ -85,7 +85,13 @@ const MainNavigator = createSwitchNavigator({
         }),
     MainFlow: createStackNavigator({
         MainTab,
-        webView : WebViewScreen
+        webView : WebViewScreen,
+        editProfile:{
+            screen: EditProfileScreen,
+            navigationOptions:{
+                headerTitleAlign:'left', 
+            }
+        }
         },{
             defaultNavigationOptions: {
                 headerStyle: {

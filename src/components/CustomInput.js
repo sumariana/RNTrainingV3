@@ -97,7 +97,6 @@ const CustomInput = props=>{
         style={styles.container}
         >
             <Text style={styles.label}>{props.label}</Text>
-            <SpacerTop spacer={10}/>
             <TextInput
                 {...props}
                 style={styles.input}
@@ -108,7 +107,6 @@ const CustomInput = props=>{
                 editable={props.isEditing!==null ? props.isEditing : true}
                 secureTextEntry={props.secure ? props.secure : false}
             />
-            <View style={{borderBottomColor:'black',borderWidth:0.5}} />
             { inputState.focused===false && !inputState.isValid && inputState.errorMessage!=='' && (
             <Text style={styles.error}>
                 {inputState.errorMessage}
@@ -125,12 +123,16 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize:14,
-        fontFamily:'rubik-bold'
-        
+        marginStart:3,
+        fontFamily:'rubik-bold',
+        color: 'black'
     },
     input: {
         fontSize:14,
-        fontFamily:'rubik-regular'
+        fontFamily:'rubik-regular',
+        color: 'black',
+        borderBottomColor:'black',
+        borderBottomWidth:1
     },
     error:{
         color:'red',

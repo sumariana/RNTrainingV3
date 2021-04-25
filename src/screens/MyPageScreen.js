@@ -1,5 +1,5 @@
 import React,{useState,useCallback,useEffect,useRef} from 'react';
-import { StyleSheet, View, Text,ScrollView,Platform,TouchableOpacity,SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text,ScrollView,Platform,TouchableOpacity,SafeAreaView,Alert } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import SpacerTop from '../components/SpacerTop';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
@@ -91,81 +91,38 @@ const MyPageScreen = props =>{
             onBackdropPress={() => showHideSheet()}>
             <View
                 style={{
-                    height: SHEET_HEIGHT,
-                    paddingTop: 8,
+                    height: imagePhoto!==null ? SHEET_HEIGHT : 150,
+                    paddingTop: 16,
+                    paddingBottom:16,
                     backgroundColor: 'white',
-                    borderTopRightRadius: 20,
-                    borderTopLeftRadius: 20
                 }}>
-                <View
-                    style={{
-                        alignSelf: 'center',
-                        width: '45%',
-                        height: 4,
-                        backgroundColor: Colors.greyLight,
-                        borderRadius: 4
-                    }} />
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        marginTop: 16,
-                        marginHorizontal: 16
+                    <View
+                    style={{flex:1,marginHorizontal:20}}
+                    >
+                        <CustomButton
+                    title={"Gallery"}
+                    type='outline'
+                    buttonStyle={{padding:15,borderWidth: 1}}
+                    onPress={checkPermission.bind(this, GALERY)}
+                    />
+                    <SpacerTop spacer={5}/>
+                    <CustomButton
+                    title={"Camera"}
+                    type='outline'
+                    buttonStyle={{padding:15,borderWidth: 1}}
+                    onPress={checkPermission.bind(this, CAMERA)}
+                    />
+                    <SpacerTop spacer={5}/>
+                    {imagePhoto!==null ? <CustomButton
+                    title={"Delete"}
+                    type='outline'
+                    titleStyle={{color:'red'}}
+                    buttonStyle={{padding:15,borderWidth: 1,borderColor:'red'}}
+                    onPress={()=>{
+                        
                     }}
-                >
-                    <View
-                        style={{
-                            flexDirection: 'column',
-                            margin: 16,
-                            alignItems: 'center'
-                        }}
-                    >
-                        <TouchableOpacity
-                            style={{ borderRadius: 50 }}
-                            onPress={checkPermission.bind(this, CAMERA)}>
-                            {/* <Image
-                                style={{ height: 50, width: 50 }}
-                                source={require('../../assets/camera.png')} /> */}
-                        </TouchableOpacity>
-                        {/* <CustomText
-                            style={{ fontFamily: 'roboto-regular', fontSize: 14, marginTop: 8 }}
-                        >Kamera</CustomText> */}
+                    /> : null}
                     </View>
-                    <View
-                        style={{
-                            flexDirection: 'column',
-                            margin: 16,
-                            alignItems: 'center'
-                        }}
-                    >
-                        <TouchableOpacity
-                            style={{ borderRadius: 50 }}
-                            onPress={checkPermission.bind(this, GALERY)}
-                        >
-                            {/* <Image
-                                style={{ height: 50, width: 50 }}
-                                source={require('../../assets/gallery.png')} /> */}
-                        </TouchableOpacity>
-                        {/* <CustomText
-                            style={{ fontFamily: 'roboto-regular', fontSize: 14, marginTop: 8 }}
-                        >Galeri</CustomText> */}
-                    </View>
-                </View>
-                <View
-                    style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        borderTopWidth: 1,
-                        width: '100%',
-                        borderTopColor: Colors.greyLight,
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                    <TouchableOpacity
-                        onPress={() => showHideSheet()}
-                        style={{ width: '100%', padding: 16 }}>
-                        {/* <CustomText style={{ color: Colors.primary, textAlign: 'center' }}>Batal</CustomText> */}
-                    </TouchableOpacity>
-                </View>
             </View>
         </Modal>
     )
@@ -226,7 +183,7 @@ const MyPageScreen = props =>{
                         cropping: true,
                       }).then(image => {
                         //console.log(image);
-                        //updateUserImage(image.path)
+                        uploadPhoto(image.path)
                       });
                 } else {
                     launchImageLibrary({
@@ -237,9 +194,9 @@ const MyPageScreen = props =>{
                         quality: 0.5
                     }, (response) => {
                         if (response.errorMessage) {
-                            //showErrorAlert(response.errorMessage)
+                            commonctions.showErrorAlert(response.errorMessage)
                         } else if (!response.didCancel) {
-                            //updateUserImage(response.uri)
+                            uploadPhoto(response.uri)
                         }
                     })
                 }
@@ -248,14 +205,29 @@ const MyPageScreen = props =>{
                     requestPermission(type);
                 } else {
                     if (type == CAMERA) {
-                        showErrorAlert("Izin akses kamera telah ditolak\nUntuk dapat mengakses fitur, mohon agar memberi izin akses melalui pengaturan aplikasi")
+                        commonctions.showErrorAlert("Izin akses kamera telah ditolak\nUntuk dapat mengakses fitur, mohon agar memberi izin akses melalui pengaturan aplikasi")
                     } else {
-                        showErrorAlert("Izin akses foto telah ditolak\nUntuk dapat mengakses fitur, mohon agar memberi izin akses melalui pengaturan aplikasi")
+                        commonctions.showErrorAlert("Izin akses foto telah ditolak\nUntuk dapat mengakses fitur, mohon agar memberi izin akses melalui pengaturan aplikasi")
                     }
                 }
             }
         }, 400);
     };
+
+    const uploadPhoto = async(photo)=>{
+        try {
+            await dispatch(authActions.uploadImageData(photo))
+            setTimeout(() => {
+                Alert.alert("Selamat", "Profil Anda Berhasil Diperbarui", [
+                    {
+                        text: "OK"
+                    }
+                ]);
+            }, 200)
+        } catch (err) {
+            commonctions.showErrorAlert(err.message)
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -299,20 +271,23 @@ const MyPageScreen = props =>{
                         <Image source={{ uri: imagePhoto }} style={styles.image} onPress={()=>{ showHideSheet(true) }}/>}
                     </View>
                     <View style={{flexDirection:'column',paddingStart:10,flex:1}}>
-                        <Text style={{fontFamily:'rubik-bold',fontSize:14}}>{email}</Text>
+                        <Text style={{fontFamily:'rubik-bold',fontSize:14,color:'black'}}>{email}</Text>
                         <SpacerTop spacer={5}/>
-                        <Text style={{fontFamily:'rubik-bold',fontSize:14}}>{password}</Text>
+                        <Text style={{fontFamily:'rubik-bold',fontSize:14,color:'black'}}>{password}</Text>
                         <SpacerTop spacer={7}/>
                         <CustomButton
                             title="Edit Profile"
                             type='outline'
                             buttonStyle={{borderWidth: 1}}
+                            onPress={()=>{
+                                props.navigation.navigate('editProfile')
+                            }}
                             />
                     </View>
                 </View>
                 <SpacerTop spacer={40}/>
-                <Text style={{fontFamily:'rubik-bold',fontSize:14}}>About Me</Text>
-                <Text style={{fontFamily:'rubik-regular',fontSize:14}}>{aboutMe}</Text>
+                <Text style={{fontFamily:'rubik-bold',fontSize:14,color:'black'}}>About Me</Text>
+                <Text style={{fontFamily:'rubik-regular',fontSize:14,color:'black'}}>{aboutMe}</Text>
                 <SpacerTop spacer={60}/>
                 <CustomButton
                     title={"Term & Condition"}
