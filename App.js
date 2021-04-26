@@ -10,7 +10,6 @@ import { Provider } from 'react-redux';
 import ReduxThunk from 'redux-thunk';
 
 import Colors from './src/constants/Colors';
-import WelcomeScreen from './src/screens/WelcomeScreen';
 import authReducer from './store/reducers/authReducer';
 import MainNavigator from './src/navigation/MainNavigator';
 import NavigationService from './src/navigation/navigationRef'

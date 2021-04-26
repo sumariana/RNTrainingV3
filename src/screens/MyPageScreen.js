@@ -267,8 +267,7 @@ const MyPageScreen = props =>{
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={{flexDirection:'row'}}>
                     <View style={styles.imageContainer}>
-                        {imagePhoto==="" || imagePhoto===null ? <TouchableOpacity onPress={()=>{showHideSheet(true)}}><View style={{...styles.image,backgroundColor:Colors.grey}}/></TouchableOpacity> : 
-                        <Image source={{ uri: imagePhoto }} style={styles.image} onPress={()=>{ showHideSheet(true) }}/>}
+                        <Image source={{ uri: imagePhoto!==null ? imagePhoto : "https://via.placeholder.com/150" }} style={styles.image} onPress={()=>{ showHideSheet(true) }}/>
                     </View>
                     <View style={{flexDirection:'column',paddingStart:10,flex:1}}>
                         <Text style={{fontFamily:'rubik-bold',fontSize:14,color:'black'}}>{email}</Text>

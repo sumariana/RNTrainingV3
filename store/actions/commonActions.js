@@ -1,4 +1,5 @@
 import { Alert } from "react-native";
+import Moment from 'moment';
 
 export const getErrorMessage = (err) => {
     console.log(err)
@@ -39,3 +40,12 @@ export const showErrorAlert = (message) => {
             ]);
     }, 200)
 }
+
+export const getDateTime = (dateTime,format) => {
+    const dateString = Moment(dateTime).format(format)
+    // const date = new Date(dateTime*1000);
+    // const hours = (`0${date.getUTCHours() + 7}`).slice(-2);
+    // const minutes = (`0${date.getMinutes()}`).slice(-2);
+    // return isDetail ? `${hours}:${minutes} ${date.getDate()} ${monthShortNames[date.getMonth()]} ${date.getFullYear()}` : `${date.getDate()} ${monthShortNames[date.getMonth()]} ${date.getFullYear()} ${hours}:${minutes}`
+    return dateString
+};

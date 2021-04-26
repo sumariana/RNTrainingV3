@@ -122,3 +122,30 @@ export const uploadImageData = (imageData) =>{
         }
     }
 }
+
+export const editProfile = (formData) =>{
+    return async (dispatch) =>{
+        try{
+            const token = await AsyncStorage.getItem(StorageKey.KEY_ACCESS_TOKEN);
+            const response = await getClient.post('/ProfileCtrl/ProfileEdit',{
+                params:{
+                    access_token: token,
+                },
+                nickname: formData.username,
+                birthday: formData.birthday,
+                residence: formData.area,
+                gender: formData.sex,
+                job: formData.occupation,
+                personality: formData.character,
+                hobby: formData.hobby,
+                about_me: formData.freeword,
+                image_id: formData.image_id,
+                language: "en"
+            });
+            const data = response.data
+            return data
+        }catch(error){
+            getErrorMessage(error)
+        }
+    }
+}

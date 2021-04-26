@@ -13,9 +13,11 @@ import MessageScreen from '../screens/MessageScreen';
 import MyPageScreen from '../screens/MyPageScreen';
 import WebViewScreen from '../screens/WebViewScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
+import ProfileDisplay from '../screens/ProfileDisplay';
+import ImagePreview from '../screens/ImagePreview';
 
 const defaultNavOptions = {
-    headerTitleAlign: 'center',
+    headerTitleAlign: 'left',
     headerBackTitleVisible: false,
     headerTitleStyle: {
         fontFamily: 'rubik-medium',
@@ -67,29 +69,28 @@ const MainNavigator = createSwitchNavigator({
                     headerShown:false,
                 }
             },
-            login: {
-                screen: LoginScreen,
-                navigationOptions:{
-                    headerTitleAlign:'left',
-                    
-                }
-            },
-            register: {
-                screen: RegisterScreen,
-                navigationOptions:{
-                    headerTitleAlign:'left', 
-                }
-            }
+            login: LoginScreen,
+            register: RegisterScreen
         },{
             defaultNavigationOptions : defaultNavOptions
         }),
     MainFlow: createStackNavigator({
         MainTab,
         webView : WebViewScreen,
-        editProfile:{
-            screen: EditProfileScreen,
+        editProfile: EditProfileScreen,
+        profileDisplay : ProfileDisplay,
+        imagePreview: {
+            screen: ImagePreview,
             navigationOptions:{
-                headerTitleAlign:'left', 
+                headerTitleStyle: {
+                    fontFamily: 'rubik-medium',
+                    fontSize: 20,
+                    color: 'white'
+                },
+                headerStyle:{
+                    backgroundColor:'black'
+                },
+                headerTintColor: 'white'
             }
         }
         },{
