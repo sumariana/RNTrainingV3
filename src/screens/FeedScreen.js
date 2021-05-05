@@ -42,7 +42,6 @@ const FeedScreen = props =>{
     const loadFeed = useCallback(async()=>{
         try{
             const response = await dispatch(feedAction.getFeed(null))
-            console.log(response)
             if(response.status===1){
                 const llt = response.lastLoginTime
                 setLastLoginTime(llt)
@@ -56,11 +55,9 @@ const FeedScreen = props =>{
     const loadMore = async()=>{
         try{
             const response = await dispatch(feedAction.getFeed())
-            console.log(response)
             if(response.status===1){
                 const llt = response.lastLoginTime
                 setLastLoginTime(llt)
-                //setFeedData(response.items)
                 setFeedData([...feedData,...response.items])
             }
         }catch(err){

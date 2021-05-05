@@ -3,6 +3,7 @@ import { StyleSheet,View,Text,TouchableOpacity, SafeAreaView,ScrollView} from 'r
 import Colors from '../constants/Colors';
 import CustomInput from '../components/CustomInput';
 import * as commonActions from '../../store/actions/commonActions';
+import * as authAction from '../../store/actions/authAction';
 import RNPickerSelect from 'react-native-picker-select';
 import {Icon} from 'react-native-elements';
 import SpacerTop from '../components/SpacerTop';
@@ -77,6 +78,19 @@ const EditProfileScreen = props =>{
         dispatchFormState({type: EDIT,value: inputValue,isValid: inputValidity,input:inputIdentifier});
     },[dispatchFormState]);
 
+    const handleUpdate = async()=>{
+        try{
+            const response = await dispatch(authAction.editProfile(formState.inputValues))
+            console.log(response)
+        }catch(err){
+            commonActions.showErrorAlert(err.message)
+        }
+    }
+
+    // useEffect(()=>{
+    //     props.navigation.setParams({save: handleUpdate});
+    // },[handleUpdate])
+
     const handleDate = (date)=>{
         setShowdatePicker(false)
         const stringDate = commonActions.getDateTime(date,"yyyy/MM/DD");
@@ -103,12 +117,17 @@ const EditProfileScreen = props =>{
             lists= {HobbyData}
             onSave={(valueList,labelList)=>{
                 setShowHobbySelector(false)
-                console.log(labelList)
+                console.log(valueList.length)
                 var text = ""
-                for(var x in labelList){
-                    text += labelList[x]+" "
+                for(var x in valueList){
+                    if(x===valueList.length){
+                        text += valueList[x]
+                    }else{
+                        text += valueList[x]+","
+                    }
                 }
                 console.log(text)
+                inputChangeHandler("hobby",text,true)
             }}
             />
             <ScrollView
@@ -117,6 +136,7 @@ const EditProfileScreen = props =>{
                 <CustomInput
                 id = 'username'
                 label = 'Username'
+                initialValue ={formState.inputValues.username}
                 onInputChange={inputChangeHandler}
                 />
                 <SpacerTop spacer={8}/>
@@ -126,7 +146,7 @@ const EditProfileScreen = props =>{
                     <Text style={styles.pickerLabel}>Date of Birth</Text>
                     <View style={{flexDirection:'row'}}>
                         <Text 
-                        style={{flex: 1,fontSize:14,paddingHorizontal:9,paddingVertical:8,fontFamily:'rubik-regular',color: formState.inputValues.birthday===null ? Colors.greyLight : 'black' }}
+                        style={{flex: 1,fontSize:14,paddingHorizontal:9,paddingVertical:8,fontFamily:'rubik-regular',color: formState.inputValues.birthday===null ? Colors.labelPlaceholder : 'black' }}
                         onPress={()=>{
                             setShowdatePicker(true)
                         }}
@@ -201,11 +221,11 @@ const EditProfileScreen = props =>{
                     <Text style={styles.pickerLabel}>Hobby</Text>
                     <View style={{flexDirection:'row'}}>
                         <Text 
-                        style={{flex: 1,fontSize:14,paddingHorizontal:9,paddingVertical:8,fontFamily:'rubik-regular',color: formState.inputValues.hobby===null ? Colors.greyLight : 'black' }}
+                        style={{flex: 1,fontSize:14,paddingHorizontal:9,paddingVertical:8,fontFamily:'rubik-regular',color: formState.inputValues.hobby.trim()=="" ? Colors.labelPlaceholder : 'black' }}
                         onPress={()=>{
                             setShowHobbySelector(true)
                         }}
-                            >{formState.inputValues.hobby==="" ? 'Hobby' : `${formState.inputValues.hobby}`}
+                            >{formState.inputValues.hobby.trim()=="" ? 'Hobby' : `${formState.inputValues.hobby}`}
                         </Text>
                         <Icon style={{marginRight:10}} type='ionicon' name='caret-down-circle-outline' color='black' />
                     </View>
@@ -234,6 +254,7 @@ const EditProfileScreen = props =>{
                 <CustomInput
                 id = 'freeword'
                 label = 'FreeWord'
+                initialValue ={formState.inputValues.aboutMe}
                 onInputChange={inputChangeHandler}
                 />
             </ScrollView>
@@ -242,13 +263,16 @@ const EditProfileScreen = props =>{
 };
 
 EditProfileScreen.navigationOptions=navData=>{
+    const save = navData.navigation.getParam('save')
     return{
         title: 'EditProfile',
         headerRight: ()=>(
             <TouchableOpacity
                 style={styles.actionContainer}
+                onPress={save}
                 >
-                <Text style={styles.actionSave}>Save</Text>
+                <Text style={styles.actionSave}
+                >Save</Text>
             </TouchableOpacity>
         )
     }
@@ -303,12 +327,6 @@ const pickerSelectStyles = StyleSheet.create({
         paddingRight: 30, // to ensure the text is never behind the icon
         borderBottomWidth: 0.5,
         borderBottomColor:'black',
-    },
-    iconContainer: {
-        height: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        right: 10
     }
 });
 

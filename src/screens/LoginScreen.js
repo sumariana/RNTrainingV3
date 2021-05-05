@@ -36,7 +36,6 @@ const LoginScreen = props =>{
         try {
             const response = await dispatch(authActions.login(email, password));
             setIsLoading(false);
-            console.log(response)
             if(response.status===1){
                 await AsyncStorage.setItem(StorageKey.KEY_ACCESS_TOKEN, response.accessToken);
                 await AsyncStorage.setItem(StorageKey.KEY_USER_ID, JSON.stringify(response.userId));

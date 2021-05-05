@@ -23,14 +23,12 @@ const HobbySelector = props =>{
                 setCheckedList(array)
                 setCheckedLabel(labelArray)
             }
-            console.log("already in list")
         }else{
-            console.log("not in list")
+        
             //not in list
             setCheckedList([...checkedList,value])
             setCheckedLabel([...checkedLabel,label])
         }
-        console.log(value)
     }
 
     return (

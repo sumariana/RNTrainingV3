@@ -4,4 +4,5 @@ export default {
     grey: '#6E6E6E',
     error: '#FF0000',
     divider: '#E2E2E2',
+    labelPlaceholder: '#CECED3'
 }

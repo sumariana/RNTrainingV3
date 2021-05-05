@@ -43,11 +43,10 @@ export const register = (formData) =>{
     }
 }
 
-export const getProfile =() =>{
+export const getProfile =(userId) =>{
     return async(dispatch) => {
             try {
             const token = await AsyncStorage.getItem(StorageKey.KEY_ACCESS_TOKEN)
-            const userId = await AsyncStorage.getItem(StorageKey.KEY_USER_ID)
             const response = await getClient.get('/ProfileCtrl/ProfileDisplay',{
                 params:{
                     access_token: token,
@@ -55,7 +54,6 @@ export const getProfile =() =>{
                 }
             });
             const data = response.data
-            console.log(data)
             dispatch({type: GET_USER_DATA,payload: data})
         } catch (err) {
             getErrorMessage(err);
@@ -67,7 +65,7 @@ export const deleteAccount =() =>{
     return async(dispatch) => {
             try {
             const token = await AsyncStorage.getItem(StorageKey.KEY_ACCESS_TOKEN)
-            const response = await getClient.post('/AccountCtrl/DeleteAccount',{
+            const response = await getClient.delete('/AccountCtrl/DeleteAccount',{
                 params:{
                     access_token: token
                 }
@@ -100,10 +98,10 @@ export const uploadImageData = (imageData) =>{
             const userId = await AsyncStorage.getItem(StorageKey.KEY_USER_ID)
             const response = await axios.post('https://terraresta.com/app/api/MediaCtrl/ImageUpload',formData,{
                 params:{
-                    access_token: token
+                    access_token: token,
+                    location: 'Profile'
                 },
             });
-            console.log(response.data)
             if(response.data.status===1){
                 const profilResponse = await getClient.get('/ProfileCtrl/ProfileDisplay',{
                     params:{
@@ -112,7 +110,6 @@ export const uploadImageData = (imageData) =>{
                     }
                 });
                 const data = profilResponse.data
-                console.log(data)
                 dispatch({type: GET_USER_DATA,payload: data})
             }else{
                 showErrorAlert("upload image is failed !")
@@ -126,11 +123,9 @@ export const uploadImageData = (imageData) =>{
 export const editProfile = (formData) =>{
     return async (dispatch) =>{
         try{
+            const queryString= require('query-string')
             const token = await AsyncStorage.getItem(StorageKey.KEY_ACCESS_TOKEN);
-            const response = await getClient.post('/ProfileCtrl/ProfileEdit',{
-                params:{
-                    access_token: token,
-                },
+            const response = await getClient.post(`/ProfileCtrl/ProfileEdit?access_token=${token}`,queryString.stringify({
                 nickname: formData.username,
                 birthday: formData.birthday,
                 residence: formData.area,
@@ -141,7 +136,7 @@ export const editProfile = (formData) =>{
                 about_me: formData.freeword,
                 image_id: formData.image_id,
                 language: "en"
-            });
+            }));
             const data = response.data
             return data
         }catch(error){

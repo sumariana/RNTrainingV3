@@ -35,7 +35,8 @@ const MyPageScreen = props =>{
 
     const loadProfile = useCallback(async()=>{
         try{
-            await dispatch(authActions.getProfile())
+            const userId = await AsyncStorage.getItem(StorageKey.KEY_USER_ID)
+            await dispatch(authActions.getProfile(userId))
         }catch(err){
             commonctions.showErrorAlert(err.message)
         }
@@ -267,7 +268,7 @@ const MyPageScreen = props =>{
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={{flexDirection:'row'}}>
                     <View style={styles.imageContainer}>
-                        <Image source={{ uri: imagePhoto!==null ? imagePhoto : "https://via.placeholder.com/150" }} style={styles.image} onPress={()=>{ showHideSheet(true) }}/>
+                        <Image source={imagePhoto!=="" ? { uri: imagePhoto } : {uri: 'https://via.placeholder.com/150'}} style={styles.image} onPress={()=>{ showHideSheet(true) }}/>
                     </View>
                     <View style={{flexDirection:'column',paddingStart:10,flex:1}}>
                         <Text style={{fontFamily:'rubik-bold',fontSize:14,color:'black'}}>{email}</Text>

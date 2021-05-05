@@ -45,6 +45,7 @@ export default (state = initialState, action) => {
                 return
             }
             const userProfile = action.payload
+            console.log(userProfile.hobby)
             return{
                 ...state,
                 image: userProfile.imageUrl,
@@ -57,7 +58,7 @@ export default (state = initialState, action) => {
                 gender: userProfile.gender,
                 job: userProfile.job,
                 personality: userProfile.personality,
-                hobby: JSON.stringify(userProfile.hobby),
+                hobby: userProfile.hobby,
                 imageId: userProfile.imageId,
             }
         
