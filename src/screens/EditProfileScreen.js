@@ -54,7 +54,7 @@ const EditProfileScreen = props =>{
 
             //selector value
             sex: useSelector(state => state.authReducer.gender),
-            occupation: useSelector(state => state.authReducer.aboutMe),
+            occupation: useSelector(state => state.authReducer.job),
             area: useSelector(state => state.authReducer.residence),
             hobby: useSelector(state => state.authReducer.hobby),
             character: useSelector(state => state.authReducer.personality)
@@ -74,22 +74,26 @@ const EditProfileScreen = props =>{
         formIsValid:false
     });
 
+    useEffect(()=>{
+        console.log(formState.inputValues.sex)
+    },[])
+
     const inputChangeHandler = useCallback((inputIdentifier, inputValue,inputValidity)=>{
         dispatchFormState({type: EDIT,value: inputValue,isValid: inputValidity,input:inputIdentifier});
     },[dispatchFormState]);
 
-    const handleUpdate = async()=>{
+    const handleUpdate = useCallback(async()=>{
         try{
             const response = await dispatch(authAction.editProfile(formState.inputValues))
             console.log(response)
         }catch(err){
             commonActions.showErrorAlert(err.message)
         }
-    }
+    },[formState])
 
-    // useEffect(()=>{
-    //     props.navigation.setParams({save: handleUpdate});
-    // },[handleUpdate])
+    useEffect(()=>{
+        props.navigation.setParams({save: handleUpdate});
+    },[handleUpdate])
 
     const handleDate = (date)=>{
         setShowdatePicker(false)
@@ -117,10 +121,9 @@ const EditProfileScreen = props =>{
             lists= {HobbyData}
             onSave={(valueList,labelList)=>{
                 setShowHobbySelector(false)
-                console.log(valueList.length)
                 var text = ""
                 for(var x in valueList){
-                    if(x===valueList.length){
+                    if(x==valueList.length-1){
                         text += valueList[x]
                     }else{
                         text += valueList[x]+","
@@ -165,7 +168,7 @@ const EditProfileScreen = props =>{
                     <RNPickerSelect
                     style={{ ...pickerSelectStyles }}
                     useNativeAndroidPickerStyle={false}
-                    value={formState.inputValues.sex}
+                    value={formState.inputValues.sex.toString()}
                     placeholder={{ key: 0, label: "Sex", value: 0 }}
                     onValueChange={(itemValue, itemIndex) => {
                         inputChangeHandler("sex",itemValue,true)
@@ -184,7 +187,7 @@ const EditProfileScreen = props =>{
                     <RNPickerSelect
                     style={{ ...pickerSelectStyles }}
                     useNativeAndroidPickerStyle={false}
-                    value={formState.inputValues.occupation}
+                    value={formState.inputValues.occupation.toString()}
                     placeholder={{ key: 0, label: "Occupation", value: 0 }}
                     onValueChange={(itemValue, itemIndex) => {
                         inputChangeHandler("occupation",itemValue,true)
@@ -240,7 +243,7 @@ const EditProfileScreen = props =>{
                     <RNPickerSelect
                     style={{ ...pickerSelectStyles }}
                     useNativeAndroidPickerStyle={false}
-                    value={formState.inputValues.character}
+                    value={formState.inputValues.character.toString()}
                     placeholder={{ key: 0, label: "Character", value: 0 }}
                     onValueChange={(itemValue, itemIndex) => {
                         inputChangeHandler("character",itemValue,true)
@@ -254,7 +257,7 @@ const EditProfileScreen = props =>{
                 <CustomInput
                 id = 'freeword'
                 label = 'FreeWord'
-                initialValue ={formState.inputValues.aboutMe}
+                initialValue ={formState.inputValues.freeword}
                 onInputChange={inputChangeHandler}
                 />
             </ScrollView>

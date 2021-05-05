@@ -45,7 +45,6 @@ export default (state = initialState, action) => {
                 return
             }
             const userProfile = action.payload
-            console.log(userProfile.hobby)
             return{
                 ...state,
                 image: userProfile.imageUrl,

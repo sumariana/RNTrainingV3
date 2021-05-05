@@ -1,3 +1,28 @@
 https://github.com/mmazzarolo/react-native-modal-datetime-picker
 https://github.com/lawnstarter/react-native-picker-select
 https://github.com/zoontek/react-native-permissions
+
+Response: {
+  "status": 1,
+  "userId": 948,
+  "nickname": "sumariana",
+  "imageId": 2749,
+  "imageSize": "150x200",
+  "imageUrl": "https://s3-ap-northeast-1.amazonaws.com/app-lesson-media/image/948_207ea425062d4b80ac9c78defc9401f1.jpg",
+  "gender": 1,
+  "age": 0,
+  "job": 2,
+  "residence": "Tabanan",
+  "personality": 2,
+  "hobby": "2,1",
+  "aboutMe": "asdddddasd",
+  "userStatus": 0,
+  "email": "dimsum@gmail.com",
+  "password": "bali1234",
+  "birthday": "2021/05/02",
+  "error": {
+    "errorCode": 0,
+    "errorTitle": null,
+    "errorMessage": null
+  }
+}
