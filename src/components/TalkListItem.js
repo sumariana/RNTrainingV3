@@ -7,11 +7,6 @@ import SpacerVertical from '../components/SpacerVertical';
 const TalkListItem = props=>{
     const {id,onCheckedChange} = props
 
-    //useeffect trigger func di parent
-    // useEffect(()=>{
-    //     onCheckedChange(id)
-    // },[id,onCheckedChange])
-
     return (
     <View style={styles.container}>
         {

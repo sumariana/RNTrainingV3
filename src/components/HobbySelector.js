@@ -7,8 +7,8 @@ import {CheckBox} from 'react-native-elements';
 
 const HobbySelector = props =>{
 
-    const [checkedList,setCheckedList] = useState([])
-    const [checkedLabel,setCheckedLabel] = useState([])
+    const [checkedList,setCheckedList] = useState(props.initialValue)
+    const [checkedLabel,setCheckedLabel] = useState(props.initialValueLabel)
 
     const handleSelectHobby = (value,label) =>{
 

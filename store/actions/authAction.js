@@ -55,6 +55,7 @@ export const getProfile =(userId) =>{
             });
             const data = response.data
             dispatch({type: GET_USER_DATA,payload: data})
+            return data
         } catch (err) {
             getErrorMessage(err);
         }

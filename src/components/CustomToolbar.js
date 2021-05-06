@@ -15,7 +15,7 @@ const customToolbar = props=>{
 const styles = StyleSheet.create({
     container:{
         overflow:'hidden',
-        paddingBottom:5
+        paddingBottom:5,
     },
     customToolbar: {
         height: headerHeight,

@@ -15,6 +15,7 @@ import WebViewScreen from '../screens/WebViewScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import ProfileDisplay from '../screens/ProfileDisplay';
 import ImagePreview from '../screens/ImagePreview';
+import ChatRoomScreen from '../screens/ChatRoomScreen';
 
 const defaultNavOptions = {
     headerTitleAlign: 'left',
@@ -79,6 +80,12 @@ const MainNavigator = createSwitchNavigator({
         webView : WebViewScreen,
         editProfile: EditProfileScreen,
         profileDisplay : ProfileDisplay,
+        chatRoom: {
+            screen: ChatRoomScreen,
+            navigationOptions:{
+                header: ()=> false
+            }
+        },
         imagePreview: {
             screen: ImagePreview,
             navigationOptions:{

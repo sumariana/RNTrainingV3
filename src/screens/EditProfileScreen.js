@@ -10,6 +10,7 @@ import SpacerTop from '../components/SpacerTop';
 import { useDispatch, useSelector } from 'react-redux';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import HobbySelector from '../components/HobbySelector';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 
 const EDIT = 'EDIT';
 
@@ -42,6 +43,8 @@ const EditProfileScreen = props =>{
     const AreaData = useSelector(state => state.authReducer.AREA_DATA);
     const HobbyData = useSelector(state => state.authReducer.HOBBY_DATA);
     const CharacterData = useSelector(state => state.authReducer.CHARACTER);
+    const initialHobbyList = useSelector(state=> state.authReducer.selectedHobby);
+    const initialHobbyLabel = useSelector(state=> state.authReducer.selectedHobbyLabel);
     const [showDatePicker,setShowdatePicker] = useState(false)
     const [showHobbySelector,setShowHobbySelector] = useState(false)
 
@@ -57,6 +60,7 @@ const EditProfileScreen = props =>{
             occupation: useSelector(state => state.authReducer.job),
             area: useSelector(state => state.authReducer.residence),
             hobby: useSelector(state => state.authReducer.hobby),
+            hobbyLabel: useSelector(state => state.authReducer.hobbyLabel),
             character: useSelector(state => state.authReducer.personality)
         },
         inputValidities:{
@@ -69,6 +73,7 @@ const EditProfileScreen = props =>{
             occupation: true,
             area:true,
             hobby: true,
+            hobbyLabel:true,
             character: true
         },
         formIsValid:false
@@ -85,6 +90,14 @@ const EditProfileScreen = props =>{
     const handleUpdate = useCallback(async()=>{
         try{
             const response = await dispatch(authAction.editProfile(formState.inputValues))
+            Alert.alert("Selamat", "Profil Anda Berhasil Diperbarui", [
+                {
+                    text: "OK",
+                    onPress:()=>{
+                        props.navigation.goBack()
+                    }
+                }
+            ]);
             console.log(response)
         }catch(err){
             commonActions.showErrorAlert(err.message)
@@ -106,6 +119,9 @@ const EditProfileScreen = props =>{
     return (
         <SafeAreaView
             style={styles.container}>
+            <FocusAwareStatusBar
+            barStyle='dark-content'
+            backgroundColor='white' />
             <DateTimePickerModal
                 isVisible={showDatePicker}
                 mode="date"
@@ -119,18 +135,20 @@ const EditProfileScreen = props =>{
                 setShowHobbySelector(false)
             }}
             lists= {HobbyData}
+            initialValue={initialHobbyList}
+            initialValueLabel = {initialHobbyLabel}
             onSave={(valueList,labelList)=>{
                 setShowHobbySelector(false)
                 var text = ""
+                var label = ""
                 for(var x in valueList){
-                    if(x==valueList.length-1){
-                        text += valueList[x]
-                    }else{
-                        text += valueList[x]+","
-                    }
+                    text += valueList[x]+","
+                    label += labelList[x]+","
                 }
-                console.log(text)
+                label = label.replace(/.$/,"")
+                text = text.replace(/.$/,"")
                 inputChangeHandler("hobby",text,true)
+                inputChangeHandler("hobbyLabel",label,true)
             }}
             />
             <ScrollView
@@ -149,13 +167,20 @@ const EditProfileScreen = props =>{
                     <Text style={styles.pickerLabel}>Date of Birth</Text>
                     <View style={{flexDirection:'row'}}>
                         <Text 
-                        style={{flex: 1,fontSize:14,paddingHorizontal:9,paddingVertical:8,fontFamily:'rubik-regular',color: formState.inputValues.birthday===null ? Colors.labelPlaceholder : 'black' }}
+                        style={{
+                            flex: 1,
+                            fontSize:14,
+                            paddingHorizontal:9,
+                            paddingVertical:8,
+                            fontFamily:'rubik-regular',
+                            color: formState.inputValues.birthday===null ? Colors.labelPlaceholder : 'black'
+                        }}
                         onPress={()=>{
                             setShowdatePicker(true)
                         }}
                             >{formState.inputValues.birthday===null ? 'Date of Birth' : `${formState.inputValues.birthday}`}
                         </Text>
-                        <Icon style={{marginRight:10}} type='ionicon' name='caret-down-circle-outline' color='black' />
+                        <Icon type='ionicon' name='caret-down-circle-outline' color='black' />
                     </View>
                     <SpacerTop spacer={5} />
                     <View style={{borderBottomWidth:0.5,borderBottomColor:'black'}} />
@@ -168,7 +193,7 @@ const EditProfileScreen = props =>{
                     <RNPickerSelect
                     style={{ ...pickerSelectStyles }}
                     useNativeAndroidPickerStyle={false}
-                    value={formState.inputValues.sex.toString()}
+                    value={formState.inputValues.sex}
                     placeholder={{ key: 0, label: "Sex", value: 0 }}
                     onValueChange={(itemValue, itemIndex) => {
                         inputChangeHandler("sex",itemValue,true)
@@ -187,7 +212,7 @@ const EditProfileScreen = props =>{
                     <RNPickerSelect
                     style={{ ...pickerSelectStyles }}
                     useNativeAndroidPickerStyle={false}
-                    value={formState.inputValues.occupation.toString()}
+                    value={formState.inputValues.occupation}
                     placeholder={{ key: 0, label: "Occupation", value: 0 }}
                     onValueChange={(itemValue, itemIndex) => {
                         inputChangeHandler("occupation",itemValue,true)
@@ -224,13 +249,13 @@ const EditProfileScreen = props =>{
                     <Text style={styles.pickerLabel}>Hobby</Text>
                     <View style={{flexDirection:'row'}}>
                         <Text 
-                        style={{flex: 1,fontSize:14,paddingHorizontal:9,paddingVertical:8,fontFamily:'rubik-regular',color: formState.inputValues.hobby.trim()=="" ? Colors.labelPlaceholder : 'black' }}
+                        style={{flex: 1,fontSize:14,paddingHorizontal:9,paddingVertical:8,fontFamily:'rubik-regular',color: formState.inputValues.hobbyLabel.trim()=="" ? Colors.labelPlaceholder : 'black' }}
                         onPress={()=>{
                             setShowHobbySelector(true)
                         }}
-                            >{formState.inputValues.hobby.trim()=="" ? 'Hobby' : `${formState.inputValues.hobby}`}
+                            >{formState.inputValues.hobbyLabel.trim()=="" ? 'Hobby' : `${formState.inputValues.hobbyLabel}`}
                         </Text>
-                        <Icon style={{marginRight:10}} type='ionicon' name='caret-down-circle-outline' color='black' />
+                        <Icon type='ionicon' name='caret-down-circle-outline' color='black' />
                     </View>
                     <SpacerTop spacer={5} />
                     <View style={{borderBottomWidth:0.5,borderBottomColor:'black'}} />
@@ -243,7 +268,7 @@ const EditProfileScreen = props =>{
                     <RNPickerSelect
                     style={{ ...pickerSelectStyles }}
                     useNativeAndroidPickerStyle={false}
-                    value={formState.inputValues.character.toString()}
+                    value={formState.inputValues.character}
                     placeholder={{ key: 0, label: "Character", value: 0 }}
                     onValueChange={(itemValue, itemIndex) => {
                         inputChangeHandler("character",itemValue,true)
