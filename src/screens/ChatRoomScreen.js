@@ -41,6 +41,10 @@ const ChatRoomScreen = props =>{
                 </CustomToolbar>
                 <View style={{flex:1}}>
                 <ChatItem
+                mediaType={0}
+                chatType={1}
+                chat = 'Whatsapp?'
+                time='08:14 AM'
                 />
                 </View>
                 {/* <FlatList
