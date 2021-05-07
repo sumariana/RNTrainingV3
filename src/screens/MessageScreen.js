@@ -11,15 +11,34 @@ import { useDispatch } from 'react-redux';
 import * as talkAction from '../../store/actions/talkAction';
 import * as commonActions from '../../store/actions/commonActions';
 import realm from '../../store/realm';
+import StorageKey from '../constants/StorageKey';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const MessageScreen = props =>{
     const dispatch = useDispatch();
-    const realmTalkData = realm.objects("Talklist");
     const [actionTitle,setActionTitle] = useState('Edit');
     const [editMode,setEditMode] = useState(false);
-    const [talkList,setTalkList] = useState(realmTalkData);
+    const [talkList,setTalkList] = useState([]);
     const [deleteList,setDeleteList] = useState([]);
     const [lastUpdateTime, setLastUpdateTime] = useState(null);
+
+    // const loadTalkListFromRealm = useCallback(async()=>{
+    //     try{
+    //         const userId = await AsyncStorage.getItem(StorageKey.KEY_USER_ID)
+    //         const userIdInt = parseInt(userId)
+    //         const realmTalkData = realm.objects("Talklist");
+    //         console.log(`userid ${userIdInt}`)
+    //         console.log(`this is realm data ${realmTalkData}`)
+    //         //setTalkList(realmTalkData)
+    //     }catch(err){
+    //         commonActions.showErrorAlert(err.message)
+    //     }
+    // })
+
+    // useEffect(()=>{
+    //     loadTalkListFromRealm()
+    // },[])
 
     const enterEditMode = () =>{
         if(!editMode){
@@ -62,7 +81,7 @@ const MessageScreen = props =>{
         const willFocusSub = props.navigation.addListener(
             'willFocus',
             ()=>{
-                setTalkList([])
+                setLastUpdateTime(null)
                 setDeleteList([])
                 setEditMode(false)
                 setActionTitle('Edit')
@@ -79,15 +98,11 @@ const MessageScreen = props =>{
             const response = await dispatch(talkAction.getTalkList(lastUpdateTime))
             if(response.status===1){
                 //also save in realm
-                if(lastUpdateTime===null){
-                    setTalkList(response.items)
-                }else{
-                    setTalkList([...talkList,...response.items])
-                }
-                setLastUpdateTime(response.items[response.items.length-1].lastUpdateTime)
+                setTalkList(response.items)
+                //setLastUpdateTime(response.items[response.items.length-1].lastUpdateTime)
             }
         }catch(err){
-            commonActions.showErrorAlert(err.message)
+            //commonActions.showErrorAlert(err.message)
         }
     },[])
 
@@ -100,7 +115,7 @@ const MessageScreen = props =>{
             const response = await dispatch(talkAction.deleteTalkList(deleteListString))
             if(response.status===1){
                 //also delete in realm
-                setTalkList([])
+                setLastUpdateTime(null)
                 setDeleteList([])
                 setEditMode(false)
                 setActionTitle('Edit')
@@ -157,6 +172,13 @@ const MessageScreen = props =>{
                     image = {itemData.item.imageUrl}
                     checked = {deleteList.includes(itemData.item.talkId)}
                     onCheckedChange = {checkedChangeHandler}
+                    open={()=>{
+                        props.navigation.navigate('chatRoom',{
+                            userId: itemData.item.toUserId,
+                            name: itemData.item.nickname,
+                            image: itemData.item.imageUrl
+                        })
+                    }}
                     />
                 )}
                 />

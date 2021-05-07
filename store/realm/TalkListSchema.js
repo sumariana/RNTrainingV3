@@ -1,13 +1,13 @@
 const TalkListSchema = {
     name: "Talklist",
     properties: {
-        talkId: "int",
+        talkId: {type: 'int',default: 0},
         toUserId: "int",
         messageId: "int",
         userId: "int",
         nickname: "string",
         imageId: "int",
-        imageSize: "int?",
+        imageSize: "string?",
         imageUrl: "string?",
         message: "string",
         mediaType: "int",

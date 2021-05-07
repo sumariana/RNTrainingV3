@@ -21,24 +21,24 @@ getClient.interceptors.request.use(
     }
 );
 
-getClient.interceptors.request.use((x) => {
-    const printable = `--Request--\nMethod: ${x.method.toUpperCase()} \nURL: ${
-      x.baseURL
-    }${x.url} \nParams: ${JSON.stringify(
-      x.params,
-      null,
-      2,
-    )} \nData: ${JSON.stringify(x.data, null, 2)}`;
-    console.log(printable);
-    return x;
-  });
+// getClient.interceptors.request.use((x) => {
+//     const printable = `--Request--\nMethod: ${x.method.toUpperCase()} \nURL: ${
+//       x.baseURL
+//     }${x.url} \nParams: ${JSON.stringify(
+//       x.params,
+//       null,
+//       2,
+//     )} \nData: ${JSON.stringify(x.data, null, 2)}`;
+//     console.log(printable);
+//     return x;
+//   });
   
-  getClient.interceptors.response.use((x) => {
-    const printable = `--Response--\nStatus: ${
-      x.status
-    } \nResponse: ${JSON.stringify(x.data, null, 2)}`;
-    console.log(printable);
-    return x;
-  });
+//   getClient.interceptors.response.use((x) => {
+//     const printable = `--Response--\nStatus: ${
+//       x.status
+//     } \nResponse: ${JSON.stringify(x.data, null, 2)}`;
+//     console.log(printable);
+//     return x;
+//   });
 
 export default getClient;

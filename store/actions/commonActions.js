@@ -49,3 +49,9 @@ export const getDateTime = (dateTime,format) => {
     // return isDetail ? `${hours}:${minutes} ${date.getDate()} ${monthShortNames[date.getMonth()]} ${date.getFullYear()}` : `${date.getDate()} ${monthShortNames[date.getMonth()]} ${date.getFullYear()} ${hours}:${minutes}`
     return dateString
 };
+
+export const convertStringDate=(fromFormat,toFormat)=>{
+    const fromDate = Moment(fromFormat,'YYYY-MM-DD HH:mm').toDate()
+    const toFormatDateString = getDateTime(fromDate,toFormat)
+    return toFormatDateString
+}

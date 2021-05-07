@@ -3,12 +3,16 @@ import { StyleSheet, View,Platform,Dimensions,Text } from 'react-native';
 import {Image,CheckBox} from 'react-native-elements';
 import Colors from '../constants/Colors';
 import SpacerVertical from '../components/SpacerVertical';
+import { TouchableOpacity } from 'react-native';
 
 const TalkListItem = props=>{
     const {id,onCheckedChange} = props
 
     return (
-    <View style={styles.container}>
+    <TouchableOpacity
+    onPress={props.open}
+    >
+        <View style={styles.container}>
         {
             props.editMode && <CheckBox 
             containerStyle={styles.checkbox}
@@ -25,6 +29,7 @@ const TalkListItem = props=>{
             <Text style={styles.message} numberOfLines={1} >{props.message}</Text>
         </View>
     </View>
+    </TouchableOpacity>
     );
 }
 const styles = StyleSheet.create({
@@ -39,9 +44,9 @@ const styles = StyleSheet.create({
         flex:1,
     },
     image:{
-        width:80,
-        height:80,
-        borderRadius:80/2,
+        width:50,
+        height:50,
+        borderRadius:50/2,
     },
     name:{
         fontFamily:'rubik-bold',
